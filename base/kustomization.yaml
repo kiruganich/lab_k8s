@@ -14,7 +14,6 @@ resources:
   - minio-pvc.yaml
   - minio.yaml
   - minio-init-job.yaml
-  - s3-pv.yaml
   - migrate-users-job.yaml
   - migrate-messages-job.yaml
   - user-service.yaml

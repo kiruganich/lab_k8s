@@ -1,11 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 namespace: messager-dev
+
 resources:
   - ../../base
-  - s3-pv-dev.yaml # Добавили сюда
+  - s3-pv-dev.yaml  # Убедись, что этот файл создан в этой же папке
+
 commonLabels:
   environment: dev
+
 images:
   - name: mablinov2704/frontend
     newTag: latest
@@ -15,11 +19,12 @@ images:
     newTag: latest
   - name: mablinov2704/message-service
     newTag: latest
+
 patches:
   - path: patches/replicas.yaml
   - path: patches/resources.yaml
   - path: patches/ingress-host.yaml
-  - patch: | # Привязываем PVC к нашему новому PV
+  - patch: |
       apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
