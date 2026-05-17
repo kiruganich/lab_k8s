@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: minio-init
-  namespace: messager
 spec:
   backoffLimit: 10
   template:

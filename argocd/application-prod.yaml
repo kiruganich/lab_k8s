@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/kiruganich/lab_k8s.git
     targetRevision: main
-    path: k8s/overlays/prod
+    path: overlays/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: messager-prod
