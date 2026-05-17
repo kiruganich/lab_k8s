@@ -1,0 +1,39 @@
+k8s/
+  base/
+    kustomization.yaml
+    namespace.yaml
+    configmap.yaml
+    secret.yaml
+    postgres-pvc.yaml
+    postgres.yaml
+    minio-pvc.yaml
+    minio.yaml
+    minio-init-job.yaml
+    s3-pv.yaml
+    users-migrations-cm.yaml
+    messages-migrations-cm.yaml
+    migrate-users-job.yaml
+    migrate-messages-job.yaml
+    user-service.yaml
+    message-service.yaml
+    bff.yaml
+    frontend.yaml
+    ingress.yaml
+  overlays/
+    dev/
+      kustomization.yaml
+      patches/
+        replicas.yaml
+        resources.yaml
+        ingress-host.yaml
+    prod/
+      kustomization.yaml
+      patches/
+        replicas.yaml
+        resources.yaml
+        affinity-patch.yaml
+        ingress-host.yaml
+argocd/
+  application-dev.yaml
+  application-prod.yaml
+kind-config.yaml
