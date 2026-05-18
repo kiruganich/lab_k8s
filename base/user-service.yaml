@@ -12,15 +12,6 @@ spec:
       labels:
         app: user-service
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: workload
-                    operator: In
-                    values:
-                      - app
       containers:
         - name: user-service
           image: mablinov2704/user-service:latest
@@ -38,25 +29,22 @@ spec:
                   name: messager-db-secret
                   key: USER_DB_DSN
           readinessProbe:
-            httpGet:
-              path: / # Исправлено на корень
+            tcpSocket:
               port: 8081
-            initialDelaySeconds: 15
+            initialDelaySeconds: 10
             periodSeconds: 5
-            failureThreshold: 5
           livenessProbe:
-            httpGet:
-              path: / # Исправлено на корень
+            tcpSocket:
               port: 8081
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 10
           resources:
             requests:
-              cpu: "150m"
-              memory: "192Mi"
+              cpu: "50m"
+              memory: "64Mi"
             limits:
-              cpu: "300m"
-              memory: "384Mi"
+              cpu: "200m"
+              memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
