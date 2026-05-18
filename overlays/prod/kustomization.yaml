@@ -32,3 +32,10 @@ patches:
         name: message-uploads-pvc
       spec:
         volumeName: s3-pv-messager-uploads-prod
+  - patch: |
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: csi-s3-secret
+      stringData:
+        endpoint: "http://minio.messager-prod.svc.cluster.local:9000"

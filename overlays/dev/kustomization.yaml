@@ -26,8 +26,8 @@ patches:
   - path: patches/ingress-host.yaml
   - patch: |
       apiVersion: v1
-      kind: PersistentVolumeClaim
+      kind: Secret
       metadata:
-        name: message-uploads-pvc
-      spec:
-        volumeName: s3-pv-messager-uploads-dev
+        name: csi-s3-secret
+      stringData:
+        endpoint: "http://minio.messager-dev.svc.cluster.local:9000"
