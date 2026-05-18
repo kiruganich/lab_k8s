@@ -5,7 +5,7 @@ namespace: messager-dev
 
 resources:
   - ../../base
-  - s3-pv-dev.yaml  # Убедись, что этот файл создан в этой же папке
+  - s3-pv-dev.yaml
 
 commonLabels:
   environment: dev
