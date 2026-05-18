@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: s3-pv-messager-uploads
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - allow-delete
+    - use_path_request_style
+    - url=http://minio.messager.svc.cluster.local:9000
+  csi:
+    driver: ru.yandex.s3.csi
+    volumeHandle: messager-uploads-handle
+    nodePublishSecretRef:
+      name: csi-s3-secret
+      namespace: messager
+    volumeAttributes:
+      capacity: "5Gi"
+      mounter: geesefs
+      options: "--memory-limit 1000 --dir-mode 0777 --file-mode 0666"
+      bucket: messager-uploads
