@@ -23,6 +23,15 @@ spec:
       labels:
         app: postgres
     spec:
+      affinity:  # <-- ДОБАВИТЬ ЭТОТ БЛОК
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: workload
+                    operator: In
+                    values:
+                      - system
       containers:
         - name: postgres
           image: postgres:16-alpine
