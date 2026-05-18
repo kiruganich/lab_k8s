@@ -1,4 +1,3 @@
-# overlays/dev/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -8,30 +7,13 @@ resources:
   - ../../base
   - s3-pv-dev.yaml
 
-commonLabels:
-  environment: dev
-
-images:
-  - name: mablinov2704/frontend
-    newTag: latest
-  - name: mablinov2704/bff
-    newTag: latest
-  - name: mablinov2704/user-service
-    newTag: latest
-  - name: mablinov2704/message-service
-    newTag: latest
-
+# Удаляем базовый PV из генерации, чтобы не было конфликтов
 patches:
-  - path: patches/replicas.yaml
-  - path: patches/resources.yaml
-  - path: patches/ingress-host.yaml
-  - patch: |  # <-- ДОБАВИТЬ ЭТОТ ПАТЧ ДЛЯ СВЯЗЫВАНИЯ PVC
-      apiVersion: v1
-      kind: PersistentVolumeClaim
-      metadata:
-        name: message-uploads-pvc
-      spec:
-        volumeName: s3-pv-messager-uploads-dev
+  - target:
+      kind: PersistentVolume
+      name: s3-pv-placeholder
+    patch: |-
+      $patch: delete
   - patch: |
       apiVersion: v1
       kind: Secret

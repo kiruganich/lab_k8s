@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/kiruganich/lab_k8s.git
     targetRevision: main
-    path: overlays/dev
+    path: overlays/dev          ← Путь от корня репозитория
   destination:
     server: https://kubernetes.default.svc
     namespace: messager-dev

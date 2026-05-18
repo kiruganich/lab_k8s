@@ -25,13 +25,7 @@ patches:
   - path: patches/resources.yaml
   - path: patches/affinity-patch.yaml
   - path: patches/ingress-host.yaml
-  - patch: |
-      apiVersion: v1
-      kind: PersistentVolumeClaim
-      metadata:
-        name: message-uploads-pvc
-      spec:
-        volumeName: s3-pv-messager-uploads-prod
+  # Патч только на Secret
   - patch: |
       apiVersion: v1
       kind: Secret

@@ -9,3 +9,6 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: ""
+  selector:
+    matchLabels:
+      storage: s3-uploads
