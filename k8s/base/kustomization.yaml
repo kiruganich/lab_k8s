@@ -1,13 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 resources:
   - namespace.yaml
   - config.yaml
   - secret.yaml
   - postgres.yaml
   - minio.yaml
-  - csi-s3.yaml
   - jobs.yaml
   - user-service.yaml
   - message-service.yaml

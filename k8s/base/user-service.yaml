@@ -12,17 +12,6 @@ spec:
       labels:
         app: user-service
     spec:
-      # Запускаем миграции ДО старта самого приложения прямо из его образа
-      initContainers:
-        - name: run-migrations
-          image: mablinov2704/user-service:latest
-          command: ["sh", "-c", "go install github.com/pressly/goose/v3/cmd/goose@latest && ~/go/bin/goose -dir /app/migrations postgres \"$DB_DSN\" up"]
-          env:
-            - name: DB_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: messager-secrets
-                  key: USER_DB_DSN
       containers:
         - name: app
           image: mablinov2704/user-service:latest
@@ -42,7 +31,7 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 8081
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
 ---
 apiVersion: v1
 kind: Service

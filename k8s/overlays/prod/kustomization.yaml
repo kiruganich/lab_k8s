@@ -3,12 +3,12 @@ kind: Kustomization
 namespace: messager-prod
 resources:
   - ../../base
+  - csi-s3.yaml
 
 patches:
   - path: patch-affinity.yaml
   - path: patch-resources.yaml
 
-# Меняем NodePort для prod, чтобы не было конфликтов с dev
 patchesStrategicMerge:
   - |-
     apiVersion: v1

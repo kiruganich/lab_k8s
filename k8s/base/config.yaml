@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: messager-config
 data:
-  FRONTEND_BFF_URL: "" # пусто, чтобы nginx проксировал сам
+  FRONTEND_BFF_URL: ""
   FRONTEND_BFF_INTERNAL_URL: "http://bff:8080"
   BFF_HTTP_PORT: "8080"
   USER_HTTP_PORT: "8081"

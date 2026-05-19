@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: messager
 resources:
   - ../../base
+  - csi-s3.yaml
