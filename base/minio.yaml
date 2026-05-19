@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: minio
-  namespace: messager
-  labels:
-    app: minio
 spec:
   replicas: 1
   selector:
@@ -18,40 +15,19 @@ spec:
       containers:
         - name: minio
           image: minio/minio:latest
-          args: ["server", "/data", "--console-address", ":9001"]
+          command: ["/bin/sh", "-c"]
+          args: ["mkdir -p /data/uploads && minio server /data --console-address :9001"]
           ports:
             - containerPort: 9000
             - containerPort: 9001
-          env:
-            - name: MINIO_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: minio-secret
-                  key: accessKeyID
-            - name: MINIO_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: minio-secret
-                  key: secretAccessKey
-          readinessProbe:
-            httpGet:
-              path: /minio/health/ready
-              port: 9000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              cpu: "250m"
-              memory: "512Mi"
+          envFrom:
+            - secretRef:
+                name: messager-secrets
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: minio
-  namespace: messager
 spec:
   selector:
     app: minio

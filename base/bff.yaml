@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bff
-  namespace: messager
-  labels:
-    app: bff
 spec:
   replicas: 1
   selector:
@@ -16,7 +13,7 @@ spec:
         app: bff
     spec:
       containers:
-        - name: bff
+        - name: app
           image: mablinov2704/bff:latest
           ports:
             - containerPort: 8080
@@ -37,30 +34,14 @@ spec:
                   name: messager-config
                   key: MSG_SERVICE_URL
           readinessProbe:
-            httpGet:
-              path: /health
+            tcpSocket:
               port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 10
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
+            initialDelaySeconds: 5
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: bff
-  namespace: messager
 spec:
   selector:
     app: bff

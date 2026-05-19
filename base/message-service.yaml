@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: message-service
-  namespace: messager
-  labels:
-    app: message-service
 spec:
   replicas: 1
   selector:
@@ -15,8 +12,18 @@ spec:
       labels:
         app: message-service
     spec:
+      initContainers:
+        - name: run-migrations
+          image: mablinov2704/message-service:latest
+          command: ["sh", "-c", "go install github.com/pressly/goose/v3/cmd/goose@latest && ~/go/bin/goose -dir /app/migrations postgres \"$DB_DSN\" up"]
+          env:
+            - name: DB_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: messager-secrets
+                  key: MSG_DB_DSN
       containers:
-        - name: message-service
+        - name: app
           image: mablinov2704/message-service:latest
           ports:
             - containerPort: 8082
@@ -29,7 +36,7 @@ spec:
             - name: DB_DSN
               valueFrom:
                 secretKeyRef:
-                  name: messager-db-secret
+                  name: messager-secrets
                   key: MSG_DB_DSN
             - name: UPLOADS_DIR
               valueFrom:
@@ -40,24 +47,9 @@ spec:
             - name: uploads
               mountPath: /app/uploads
           readinessProbe:
-            httpGet:
-              path: /health
+            tcpSocket:
               port: 8082
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8082
-            initialDelaySeconds: 20
-            periodSeconds: 10
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
+            initialDelaySeconds: 5
       volumes:
         - name: uploads
           persistentVolumeClaim:
@@ -67,7 +59,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: message-service
-  namespace: messager
 spec:
   selector:
     app: message-service

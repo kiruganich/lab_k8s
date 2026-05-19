@@ -12,8 +12,7 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - system
+                    values: ["system"]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,14 +28,14 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - system
+                    values: ["system"]
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
 spec:
+  replicas: 2
   template:
     spec:
       affinity:
@@ -46,14 +45,14 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - app
+                    values: ["app"]
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bff
 spec:
+  replicas: 2
   template:
     spec:
       affinity:
@@ -63,14 +62,14 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - app
+                    values: ["app"]
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
 spec:
+  replicas: 2
   template:
     spec:
       affinity:
@@ -80,14 +79,14 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - app
+                    values: ["app"]
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: message-service
 spec:
+  replicas: 2
   template:
     spec:
       affinity:
@@ -97,13 +96,11 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values:
-                      - app
+                    values: ["app"]
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 100
               preference:
                 matchExpressions:
                   - key: disk
                     operator: In
-                    values:
-                      - fast
+                    values: ["fast"]
