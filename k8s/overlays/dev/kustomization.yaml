@@ -19,6 +19,16 @@ replicas:
 patches:
 - path: patch-resources.yaml
 - target:
+    kind: Deployment
+    name: message-service
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: uploads
+        emptyDir: {}
+- path: patch-resources.yaml
+- target:
     kind: StorageClass
     name: csi-s3-minio
   patch: |-
