@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/kiruganich/lab_k8s.git'
+    repoURL: 'https://github.com/tenzm/lab-k8s-messager.git'
     path: k8s/overlays/dev
     targetRevision: main
   destination:
