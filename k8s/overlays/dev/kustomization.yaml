@@ -27,7 +27,6 @@ patches:
       value:
         name: uploads
         emptyDir: {}
-- path: patch-resources.yaml
 - target:
     kind: StorageClass
     name: csi-s3-minio
