@@ -1,21 +1,53 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: messager-prod
+
 resources:
-  - ../../base
-  - csi-s3.yaml
+- ../../base
+
+namespace: messager-prod
+
+replicas:
+- name: frontend
+  count: 2
+- name: bff
+  count: 2
+- name: user-service
+  count: 2
+- name: message-service
+  count: 2
 
 patches:
-  - path: patch-affinity.yaml
-  - path: patch-resources.yaml
+- path: patch-resources.yaml
+- target:
+    kind: StorageClass
+    name: csi-s3-minio
+  patch: |-
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1provisioner-secret-namespace
+      value: messager-prod
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1controller-publish-secret-namespace
+      value: messager-prod
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1node-stage-secret-namespace
+      value: messager-prod
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1node-publish-secret-namespace
+      value: messager-prod
+- target:
+    kind: Secret
+    name: csi-s3-secret
+  patch: |-
+    - op: replace
+      path: /stringData/endpoint
+      value: http://minio.messager-prod.svc.cluster.local:9000
 
-patchesStrategicMerge:
-  - |-
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: frontend
-    spec:
-      ports:
-        - name: http
-          nodePort: 30081
+images:
+- name: mablinov2704/frontend
+  newTag: latest
+- name: mablinov2704/bff
+  newTag: latest
+- name: mablinov2704/user-service
+  newTag: latest
+- name: mablinov2704/message-service
+  newTag: latest

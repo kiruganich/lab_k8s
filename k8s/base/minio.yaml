@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: minio
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: minio
@@ -12,17 +11,36 @@ spec:
       labels:
         app: minio
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - system
       containers:
-        - name: minio
-          image: minio/minio:latest
-          command: ["/bin/sh", "-c"]
-          args: ["mkdir -p /data/uploads && minio server /data --console-address :9001"]
-          ports:
-            - containerPort: 9000
-            - containerPort: 9001
-          envFrom:
-            - secretRef:
-                name: messager-secrets
+      - name: minio
+        image: mirror.gcr.io/minio/minio:latest
+        args: ["server", "/data", "--console-address", ":9001"]
+        env:
+        - name: MINIO_ROOT_USER
+          value: "admin"
+        - name: MINIO_ROOT_PASSWORD
+          value: "password"
+        ports:
+        - containerPort: 9000
+          name: api
+        - containerPort: 9001
+          name: console
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: minio-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -32,9 +50,7 @@ spec:
   selector:
     app: minio
   ports:
-    - name: s3
-      port: 9000
-      targetPort: 9000
-    - name: console
-      port: 9001
-      targetPort: 9001
+  - port: 9000
+    name: api
+  - port: 9001
+    name: console

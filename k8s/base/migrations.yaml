@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-users
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - system
+      containers:
+      - name: goose
+        image: ghcr.io/kukymbr/goose-docker:latest
+        env:
+        - name: GOOSE_DRIVER
+          value: "postgres"
+        - name: GOOSE_DBSTRING
+          value: "host=postgres user=messager password=messager dbname=messager_users sslmode=disable"
+        - name: GOOSE_MIGRATION_DIR
+          value: "/migrations"
+        volumeMounts:
+        - name: migrations
+          mountPath: /migrations
+      volumes:
+      - name: migrations
+        configMap:
+          name: user-migrations-cm
+      restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-messages
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - system
+      containers:
+      - name: goose
+        image: ghcr.io/kukymbr/goose-docker:latest
+        env:
+        - name: GOOSE_DRIVER
+          value: "postgres"
+        - name: GOOSE_DBSTRING
+          value: "host=postgres user=messager password=messager dbname=messager_messages sslmode=disable"
+        - name: GOOSE_MIGRATION_DIR
+          value: "/migrations"
+        volumeMounts:
+        - name: migrations
+          mountPath: /migrations
+      volumes:
+      - name: migrations
+        configMap:
+          name: message-migrations-cm
+      restartPolicy: OnFailure
