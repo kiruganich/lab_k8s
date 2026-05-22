@@ -13,6 +13,13 @@ spec:
     spec:
       affinity:
         nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - app
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
             preference:
