@@ -20,6 +20,10 @@ spec:
                 operator: In
                 values:
                 - system
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
       containers:
       - name: minio
         image: mirror.gcr.io/minio/minio:latest

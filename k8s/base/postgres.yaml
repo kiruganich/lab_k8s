@@ -20,9 +20,12 @@ spec:
                 operator: In
                 values:
                 - system
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
       containers:
       - name: postgres
-        # Используем зеркало для обхода блокировок
         image: mirror.gcr.io/library/postgres:16-alpine
         env:
         - name: POSTGRES_USER

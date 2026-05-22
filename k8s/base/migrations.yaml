@@ -14,6 +14,10 @@ spec:
                 operator: In
                 values:
                 - system
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
       containers:
       - name: goose
         image: ghcr.io/kukymbr/goose-docker:latest
@@ -49,6 +53,10 @@ spec:
                 operator: In
                 values:
                 - system
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
       containers:
       - name: goose
         image: ghcr.io/kukymbr/goose-docker:latest
