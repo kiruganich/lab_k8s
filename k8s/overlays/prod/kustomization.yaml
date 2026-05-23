@@ -76,6 +76,18 @@ patches:
     - op: replace
       path: /parameters/csi.storage.k8s.io~1node-publish-secret-namespace
       value: messager-prod
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1provisioner-secret-name
+      value: prod-csi-s3-secret
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1controller-publish-secret-name
+      value: prod-csi-s3-secret
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1node-stage-secret-name
+      value: prod-csi-s3-secret
+    - op: replace
+      path: /parameters/csi.storage.k8s.io~1node-publish-secret-name
+      value: prod-csi-s3-secret
 - target:
     kind: Secret
     name: csi-s3-secret
