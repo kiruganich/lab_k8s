@@ -47,6 +47,20 @@ patches:
       path: /spec/template/spec/containers/0/env/1/value
       value: "host=prod-postgres user=messager password=messager dbname=messager_users sslmode=disable"
 - target:
+    kind: Job
+    name: migrate-users
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/1/value
+      value: "host=prod-postgres user=messager password=messager dbname=messager_users sslmode=disable"
+- target:
+    kind: Job
+    name: migrate-messages
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/1/value
+      value: "host=prod-postgres user=messager password=messager dbname=messager_messages sslmode=disable"
+- target:
     kind: StorageClass
     name: csi-s3-minio
   patch: |-
