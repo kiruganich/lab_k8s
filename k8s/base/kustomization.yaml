@@ -10,7 +10,6 @@ resources:
 - minio.yaml
 - minio-pvc.yaml
 - minio-setup.yaml
-- csi-s3.yaml
 - migrations.yaml
 - user-service.yaml
 - message-service.yaml
