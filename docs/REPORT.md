@@ -84,4 +84,4 @@ user-service-85b847b479-fx8sd     1/1     Running     2 (57m ago)   57m
 
 ---
 
-## 6. Изображения находятся в [docs/images](docs/images)
+## 6. Изображения находятся в [images/](./images/)
