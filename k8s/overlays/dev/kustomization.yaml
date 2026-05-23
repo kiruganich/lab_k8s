@@ -27,26 +27,3 @@ patches:
       value:
         name: uploads
         emptyDir: {}
-- target:
-    kind: StorageClass
-    name: csi-s3-minio
-  patch: |-
-    - op: replace
-      path: /parameters/csi.storage.k8s.io~1provisioner-secret-namespace
-      value: messager-dev
-    - op: replace
-      path: /parameters/csi.storage.k8s.io~1controller-publish-secret-namespace
-      value: messager-dev
-    - op: replace
-      path: /parameters/csi.storage.k8s.io~1node-stage-secret-namespace
-      value: messager-dev
-    - op: replace
-      path: /parameters/csi.storage.k8s.io~1node-publish-secret-namespace
-      value: messager-dev
-- target:
-    kind: Secret
-    name: csi-s3-secret
-  patch: |-
-    - op: replace
-      path: /stringData/endpoint
-      value: http://minio.messager-dev.svc.cluster.local:9000

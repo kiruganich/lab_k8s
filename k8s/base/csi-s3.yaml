@@ -18,13 +18,9 @@ parameters:
   options: "--memory-limit 1000 --dir-mode 0777 --file-mode 0666"
   bucket: uploads
   csi.storage.k8s.io/provisioner-secret-name: csi-s3-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: messager
   csi.storage.k8s.io/controller-publish-secret-name: csi-s3-secret
-  csi.storage.k8s.io/controller-publish-secret-namespace: messager
   csi.storage.k8s.io/node-stage-secret-name: csi-s3-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: messager
   csi.storage.k8s.io/node-publish-secret-name: csi-s3-secret
-  csi.storage.k8s.io/node-publish-secret-namespace: messager
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
